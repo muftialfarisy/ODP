@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">SiMonic For ODP</string>
+    <string name="Subapp1_name">SiMonic \nWelcome</string>
+    <string name="Subapp2_name">Informasi \nCovid-19</string>
+    <string name="Subapp3_name">Monitoring \nStatus \nKarantina</string>
+    <string name="Subapp4_name">Lapor \nKondisi \nDiri</string>
+    <string name="Subapp5_name">Tentang \nApp</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+</resources>
