@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cardColorTeal">
+
+    <TextView
+        android:id="@+id/jdl_register"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="REGISTRASI"
+        android:textSize="@dimen/_20sdp"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/_25sdp"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        />
+<TextView
+    android:id="@+id/silahkan"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/jdl_register"
+    android:gravity="center"
+    android:layout_marginTop="@dimen/_10sdp"
+    android:text="Silahkan Registrasi "
+    android:textColor="#000000"
+    android:textSize="@dimen/_15sdp"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/silahkan"
+        android:layout_marginTop="@dimen/_55sdp">
+        <LinearLayout
+            android:id="@+id/ln_device"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_25sdp"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Device ID"
+                android:textSize="@dimen/_12sdp"
+                android:textColor="#000000"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+            <EditText
+                android:id="@+id/txt_device"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="                                       "
+                android:textSize="@dimen/_12sdp"/>
+                <Button
+                    android:id="@+id/btn_get_device"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_15sdp"
+                    android:text="Get"/>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/ln_uuid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="@dimen/_25sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_below="@+id/ln_device">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="UUID"
+                android:textSize="@dimen/_12sdp"
+                android:textColor="#000000"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <EditText
+                    android:id="@+id/txt_uuid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="                                                "
+                    android:textSize="@dimen/_10sdp"/>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_15sdp"
+                    android:text="Get"/>
+            </LinearLayout>
+        </LinearLayout>
+        <Button
+            android:id="@+id/btn_register"
+            android:layout_below="@+id/ln_uuid"
+            android:text="REGISTER"
+            android:textColor="#FFFFFF"
+            android:textSize="30sp"
+            android:layout_width="@dimen/_205sdp"
+            android:layout_height="@dimen/_45sdp"
+            android:background="@drawable/btn_register"
+            android:shadowColor="#000000"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="5"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginLeft="@dimen/_50sdp"/>
+    </RelativeLayout>
+</RelativeLayout>
