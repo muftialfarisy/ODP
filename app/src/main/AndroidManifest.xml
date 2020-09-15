@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.simonic.ODP">
 
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.INTERNET"/>
     <application
@@ -22,5 +23,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".Register"/>
+        <activity android:name=".Laporan.Laporan_main"/>
     </application>
 </manifest>
