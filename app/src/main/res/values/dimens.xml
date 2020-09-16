@@ -10,5 +10,7 @@
     <dimen name="headerMoreTextSize">18sp</dimen>
     <dimen name="card_margin">5dp</dimen>
     <dimen name="frutorial_title">15sp</dimen>
-
+    <dimen name="standard_55">55dp</dimen>
+    <dimen name="standard_105">105dp</dimen>
+    <dimen name="standard_155">155dp</dimen>
 </resources>
