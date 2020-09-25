@@ -30,6 +30,8 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
     implementation 'net.colindodd:gradientlayout:1.2'
     implementation 'com.pranavpandey.android:dynamic-toasts:3.2.0'
+    implementation 'com.github.sharish:ShimmerRecyclerView:v1.3'
+    implementation 'com.android.volley:volley:1.1.1'
 
     //firebase
     implementation 'com.google.firebase:firebase-database:19.4.0'

@@ -5,6 +5,8 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -24,5 +26,9 @@
         </activity>
         <activity android:name=".Register"/>
         <activity android:name=".Laporan.Laporan_main"/>
+        <activity android:name=".Laporan.Checkup.Laporan_checkup"/>
+        <activity android:name=".Laporan.Checkup.Input_checkup"/>
+        <activity android:name=".Laporan.Masalah.Input_masalah"/>
+        <activity android:name=".Laporan.Suhu.Input_suhu"/>
     </application>
 </manifest>
