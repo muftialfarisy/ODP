@@ -3,7 +3,7 @@ package com.simonic.ODP.Laporan.Checkup;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Lcheckup_gs implements Parcelable {
+public class Lcheckup_gs  {
     String rs;
     String tanggal;
     String haemoglobin;
@@ -11,11 +11,23 @@ public class Lcheckup_gs implements Parcelable {
     String trombosit;
     String elektrolit;
     String kadar_puasa;
-    private boolean expanded;
 
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    String key;
+    private boolean expanded;
+    public Lcheckup_gs(){
+
+    }
     public Lcheckup_gs(String rs,String tanggal,String haemoglobin, String leukosit,
                        String trombosit, String elektrolit, String kadar_puasa, String kadar_setelah_puasa, String kolesterol,
-                       String asam_urat, String fungsi_hati, String fungsi_ginjal){
+                       String asam_urat, String fungsi_hati, String fungsi_ginjal,String key){
         this.rs = rs;
         this.tanggal = tanggal;
         this.haemoglobin = haemoglobin;
@@ -28,12 +40,10 @@ public class Lcheckup_gs implements Parcelable {
         this.asam_urat = asam_urat;
         this.fungsi_hati = fungsi_hati;
         this.fungsi_ginjal = fungsi_ginjal;
+        this.key = key;
         this.expanded = false;
     }
-    protected Lcheckup_gs(Parcel in) {
-        rs = in.readString();
-        tanggal = in.readString();
-    }
+
     public String getRs() {
         return rs;
     }
@@ -142,26 +152,5 @@ public class Lcheckup_gs implements Parcelable {
     String fungsi_hati;
     String fungsi_ginjal;
 
-    public static final Creator<Lcheckup_gs> CREATOR = new Creator<Lcheckup_gs>() {
-        @Override
-        public Lcheckup_gs createFromParcel(Parcel in) {
-            return new Lcheckup_gs(in);
-        }
 
-        @Override
-        public Lcheckup_gs[] newArray(int size) {
-            return new Lcheckup_gs[size];
-        }
-    };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(rs);
-        parcel.writeString(tanggal);
-    }
 }

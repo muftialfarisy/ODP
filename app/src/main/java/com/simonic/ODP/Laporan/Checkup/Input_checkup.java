@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -26,8 +27,11 @@ import androidx.core.app.ActivityCompat;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.pranavpandey.android.dynamic.toasts.DynamicToast;
 import com.simonic.ODP.Laporan.Laporan_main;
 import com.simonic.ODP.R;
@@ -36,14 +40,17 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class Input_checkup extends AppCompatActivity {
-    TextView tgl,deviceidd;
+    TextView tgl,deviceidd,random2;
+    private ArrayList<Checkup_gs> reportlist = new ArrayList<>();
     private ArrayList<Lcheckup_gs> reportlist2 = new ArrayList<>();
+    Checkup_gs cg;
     EditText txtrs,txthaemoglobin,txtleukosit,txttrombosit,txtelektrolit,txtpuasa,txtsetelah,txtkolesterol,txtasamurat,txthati,txtginjal;
     Button submit;
     FirebaseAuth mAuth;
     FirebaseAnalytics mFirebaseAnalytics;
     TelephonyManager telephonyManager;
     private static final int PERMISSION_REQUEST_BACKGROUND_LOCATION = 2;
+    long id=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +58,7 @@ public class Input_checkup extends AppCompatActivity {
         tgl = findViewById(R.id.txt_tgl);
         txtrs =findViewById(R.id.txt_rs);
         deviceidd = findViewById(R.id.device_idd);
-
+        cg = new Checkup_gs();
         txthaemoglobin =findViewById(R.id.txt_hae);
         txtleukosit =findViewById(R.id.txt_leukosit);
         txttrombosit =findViewById(R.id.txt_trombosit);
@@ -64,7 +71,27 @@ public class Input_checkup extends AppCompatActivity {
         txthati =findViewById(R.id.txt_hati);
         txtginjal = findViewById(R.id.txt_ginjal);
         submit = findViewById(R.id.btn_submit_ck);
+        random2 = findViewById(R.id.tt);
+
         getdevice();
+        String idd = deviceidd.getText().toString();
+        final DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Data ODP").child(idd).child("laporan_checkup");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(!snapshot.exists()){
+                    id=id+1;
+                }else  {
+
+                    id=(snapshot.getChildrenCount());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         final String device = getIntent().getStringExtra("device");
         final Calendar calendar = Calendar.getInstance();
         final int tahun = calendar.get(Calendar.YEAR);
@@ -107,26 +134,32 @@ public class Input_checkup extends AppCompatActivity {
                 final String ginjal = txtginjal.getText().toString();
                 final String tgl2 = tgl.getText().toString();
                 String idd = deviceidd.getText().toString();
-                DatabaseReference ref = FirebaseDatabase.getInstance()
-                        .getReferenceFromUrl("https://simonicv2.firebaseio.com/Data ODP");
-                DatabaseReference quizRef = ref.child("Data ODP").child(idd).child("laporan_checkup");
-                String key = quizRef.push().getKey();
-                //ref.child(device).child("namae").setValue("alfa");
-                ref.child(idd).child("laporan_checkup").child(key).setValue(new Checkup_gs(rs,tgl2,haemoglobin,leukosit,trombosit,elektrolit,kadar_puasa,kadar_setelah,kolesterol,asam_urat,hati,
-                                ginjal))
-                        .addOnSuccessListener(Input_checkup.this, new OnSuccessListener() {
-                            @Override
-                            public void onSuccess(Object o) {
-                                //Peristiwa ini terjadi saat user berhasil menyimpan datanya kedalam Database
-                                reportlist2.add(new Lcheckup_gs(txtrs.getText().toString(),tgl.getText().toString(),haemoglobin,leukosit,trombosit,elektrolit,kadar_puasa,kadar_setelah,kolesterol,asam_urat,hati,
-                                        ginjal));
-                                //emptydata();
-                                DynamicToast.makeSuccess(Input_checkup.this, "Data Tersimpan", Toast.LENGTH_SHORT).show();
 
+                //
+                cg.setRs(rs);
+                cg.setHaemoglobin(haemoglobin);
+                cg.setLeukosit(leukosit);
+                cg.setTrombosit(trombosit);
+                cg.setElektrolit(elektrolit);
+                cg.setKadar_puasa(kadar_puasa);
+                cg.setKadar_setelah_puasa(kadar_setelah);
+                cg.setKolesterol(kolesterol);
+                cg.setAsam_urat(asam_urat);
+                cg.setFungsi_hati(hati);
+                cg.setFungsi_ginjal(ginjal);
+                cg.setTanggal(tgl2);
+                reference.child(String.valueOf(id+1)).setValue(cg).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                        DynamicToast.makeSuccess(Input_checkup.this, "Data Tersimpan", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                //
                             }
                         });
-            }
-        });
+
+
     }
     public void getdevice(){
         telephonyManager  = (TelephonyManager) getSystemService(Context.

@@ -22,6 +22,7 @@ public class Checkup_gs {
     public Checkup_gs(){
 
     }
+
     public boolean isExpanded() {
         return expanded;
     }

@@ -21,7 +21,10 @@
             android:layout_marginTop="@dimen/_25sdp"
             android:textSize="@dimen/_15sdp"
             android:textStyle="bold"/>
-
+<TextView
+    android:id="@+id/tt"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"/>
     </LinearLayout>
 <LinearLayout
     android:id="@+id/ln_d"

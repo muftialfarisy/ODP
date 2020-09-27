@@ -1,6 +1,8 @@
 package com.simonic.ODP.Laporan.Checkup;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,6 +27,7 @@ public class CheckupAdapter extends RecyclerView.Adapter<CheckupAdapter.ViewHold
 
     public ArrayList<Checkup_gs> reportlist = new ArrayList<>();
     Activity activity;
+
     public CheckupAdapter(Activity activity, ArrayList<Checkup_gs> reportlist) {
         super();
         this.activity = activity;
@@ -110,4 +114,5 @@ public class CheckupAdapter extends RecyclerView.Adapter<CheckupAdapter.ViewHold
 
         }
     }
+
 }

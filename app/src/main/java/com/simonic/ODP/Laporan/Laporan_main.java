@@ -81,8 +81,10 @@ public class Laporan_main extends AppCompatActivity implements NavigationView.On
     FloatingActionButton fab,fab1,fab2,fab3;
     LinearLayout fab1l,fab2l,fab3l;
     View fabBGLayout;
-    TextView id;
+    TextView id,random;
     String GetUserID;
+    Checkup_gs cg;
+    int i;
     boolean isFABOpen = false;
     private ArrayList<Checkup_gs> reportlist = new ArrayList<>();
     private ArrayList<Lcheckup_gs> reportlist2 = new ArrayList<>();
@@ -93,6 +95,7 @@ public class Laporan_main extends AppCompatActivity implements NavigationView.On
     TelephonyManager telephonyManager;
     private static final int PERMISSION_REQUEST_BACKGROUND_LOCATION = 2;
     ArrayList<String> categories = new ArrayList<>();
+    long mid = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,6 +111,46 @@ public class Laporan_main extends AppCompatActivity implements NavigationView.On
         LinearLayoutManager layoutManager = new LinearLayoutManager(Laporan_main.this);
         Rv_reportc.setLayoutManager(layoutManager);
         Rv_reportc.showShimmerAdapter();
+        random = findViewById(R.id.test);
+        getdevice();
+        cg = new Checkup_gs();
+        String idd = id.getText().toString();
+
+
+
+        for (i=0;i<50;i++) {
+            final DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Data ODP").child(idd).child("laporan_checkup").child(String.valueOf(i));
+            reference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (!snapshot.exists()) {
+                        mid = mid + 1;
+                        if (i < 0){
+                            showDialog();
+                        }
+                    } else {
+
+                        mid = (snapshot.getChildrenCount());
+                        Checkup_gs individu = snapshot.getValue(Checkup_gs.class);
+                        reportlist.add(individu);
+
+                        adapter = new CheckupAdapter(Laporan_main.this, reportlist);
+
+
+                        Rv_reportc.setAdapter(adapter);
+                        adapter.notifyDataSetChanged();
+
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
+        }
+        //random.setText(getIntent().getStringExtra("key"));
 
         fab1l = findViewById(R.id.ln_fab1);
         fab2l = findViewById(R.id.ln_fab2);
@@ -155,8 +198,8 @@ public class Laporan_main extends AppCompatActivity implements NavigationView.On
         navigationView = findViewById(R.id.navigationview);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(0);
-        getdevice();
-        getdata();
+
+        //getdata();
     }
     private void showFABMenu(){
         isFABOpen=true;
@@ -222,26 +265,27 @@ public class Laporan_main extends AppCompatActivity implements NavigationView.On
     }
     public void getdata() {
 
-        reference = FirebaseDatabase.getInstance().getReference();
+        //reference = FirebaseDatabase.getInstance().getReference();
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        final String getUserID = auth.getCurrentUser().getUid();
         String id2 = id.getText().toString();
+        String tst = random.getText().toString();
         DatabaseReference quizRef = reference.child("Data ODP").child(id2).child("laporan_checkup");
-        String key = quizRef.push().getKey();
-        reference.child("Data ODP").child(id2).child("laporan_checkup").addValueEventListener(new ValueEventListener() {
+        final String key = quizRef.push().getKey();
+        String k2 = cg.getKey();
+        reference.child("Data ODP").child(id2).child("laporan_checkup").child(String.valueOf(mid+1)).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                reportlist = new ArrayList<>();
 
                     Checkup_gs individu = snapshot.getValue(Checkup_gs.class);
-                    reportlist.add(individu);
+                reportlist.add(individu);
 
-                    adapter = new CheckupAdapter(Laporan_main.this, reportlist);
+                adapter = new CheckupAdapter(Laporan_main.this, reportlist);
 
 
-                    Rv_reportc.setAdapter(adapter);
-                    adapter.notifyDataSetChanged();
-
+                Rv_reportc.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
 
 
             }
@@ -313,6 +357,39 @@ public class Laporan_main extends AppCompatActivity implements NavigationView.On
             deviceId = Settings.Secure.getString(Laporan_main.this.getContentResolver(), Settings.Secure.ANDROID_ID);
             id.setText(deviceId);
         }
+    }
+    private void showDialog(){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                this);
+
+        // set title dialog
+        alertDialogBuilder.setTitle("Laporan Kosong!");
+
+        // set pesan dari dialog
+        alertDialogBuilder
+                .setMessage("Apakah Anda Ingin Memasukkan Laporan?")
+                .setIcon(R.mipmap.ic_launcher)
+                .setCancelable(false)
+                .setPositiveButton("Ya",new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int id) {
+                        // jika tombol diklik, maka akan menutup activity ini
+                        Intent intent = new Intent(Laporan_main.this, Input_checkup.class);
+                        startActivity(intent);
+                    }
+                })
+                .setNegativeButton("Tidak",new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // jika tombol ini diklik, akan menutup dialog
+                        // dan tidak terjadi apa2
+                        Laporan_main.this.finish();
+                    }
+                });
+
+        // membuat alert dialog dari builder
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // menampilkan alert dialog
+        alertDialog.show();
     }
 
     }
