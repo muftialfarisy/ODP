@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,21 +17,36 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.pranavpandey.android.dynamic.toasts.DynamicToast;
+import com.simonic.ODP.Laporan.Checkup.Input_checkup;
+
+import org.json.JSONObject;
+
+import java.util.Iterator;
 
 public class Register extends AppCompatActivity {
      FirebaseAuth mAuth;
      FirebaseAnalytics mFirebaseAnalytics;
     TelephonyManager telephonyManager;
+    DatabaseReference reff;
     Button register,get_device;
     EditText txt_device,txt_uuid;
     TextView id;
@@ -45,6 +61,7 @@ public class Register extends AppCompatActivity {
         txt_uuid = findViewById(R.id.txt_uuid);
 
         id = findViewById(R.id.d_id);
+        getdevice();
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,14 +91,15 @@ public class Register extends AppCompatActivity {
             }
         });
         get_device = findViewById(R.id.btn_get_device);
-
         get_device.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
          getdevice();
             }
         });
+
     }
+
     public void getdevice(){
         telephonyManager  = (TelephonyManager) getSystemService(Context.
                 TELEPHONY_SERVICE);
@@ -121,7 +139,8 @@ public class Register extends AppCompatActivity {
 
 
         }
-        @SuppressLint("HardwareIds") String deviceId = telephonyManager.getDeviceId();
+        @SuppressLint("HardwareIds")
+        String deviceId = telephonyManager.getDeviceId();
 
         txt_device.setText(deviceId);
         if (null != telephonyManager) {

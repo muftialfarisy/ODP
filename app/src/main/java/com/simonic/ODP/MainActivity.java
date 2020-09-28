@@ -19,6 +19,11 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.appcompat.app.AppCompatDelegate;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.simonic.ODP.Laporan.Checkup.Input_checkup;
 import com.simonic.ODP.Laporan.Laporan_main;
 
@@ -43,6 +48,7 @@ public class MainActivity extends AppCompatActivity
     private static final int PERMISSION_REQUEST_BACKGROUND_LOCATION = 2;
 CardView cd_lapor,cd_monitor;
 TextView id;
+Integer no;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,8 +71,14 @@ TextView id;
         cd_monitor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, Input_checkup.class);
-                startActivity(intent);
+                getdevice();
+                if(no == 1){
+                    Intent intent = new Intent(MainActivity.this, Input_checkup.class);
+                    startActivity(intent);
+                }else {
+                    Intent intent = new Intent(MainActivity.this, Register.class);
+                    startActivity(intent);
+                }
             }
         });
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -140,6 +152,26 @@ TextView id;
             deviceId = Settings.Secure.getString(MainActivity.this.getContentResolver(), Settings.Secure.ANDROID_ID);
             id.setText(deviceId);
         }
+
+        //setdata
+
+        final String finalDeviceId = deviceId;
+        DatabaseReference reff = FirebaseDatabase.getInstance().getReference().child("Data ODP");
+        reff.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.hasChild(finalDeviceId)){
+                    no = 1;
+                }else{
+                    no = 2;
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 public void setintent(){
     Intent intent = new Intent(MainActivity.this, Laporan_main.class);
