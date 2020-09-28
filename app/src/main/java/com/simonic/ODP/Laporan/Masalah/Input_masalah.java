@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -27,8 +28,11 @@ import androidx.core.app.ActivityCompat;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.pranavpandey.android.dynamic.toasts.DynamicToast;
 import com.simonic.ODP.R;
 
@@ -42,6 +46,8 @@ public class Input_masalah extends AppCompatActivity {
     private static final int PERMISSION_REQUEST_BACKGROUND_LOCATION = 2;
     FirebaseAuth mAuth;
     FirebaseAnalytics mFirebaseAnalytics;
+    long id=0;
+    Masalah_gs mg;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +62,25 @@ public class Input_masalah extends AppCompatActivity {
         final int bulan = calendar.get(Calendar.MONTH);
         final int hari = calendar.get(Calendar.DAY_OF_MONTH);
         getdevice();
+        mg = new Masalah_gs();
+        String idd = deviceidd.getText().toString();
+        final DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Data ODP").child(idd).child("laporan_masalah");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(!snapshot.exists()){
+                    id=id+1;
+                }else  {
+
+                    id=(snapshot.getChildrenCount());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         tgl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,12 +126,10 @@ public class Input_masalah extends AppCompatActivity {
                 String tgl2 = tgl.getText().toString();
                 String jam2 = jam.getText().toString();
                 String idd = deviceidd.getText().toString();
-                DatabaseReference ref = FirebaseDatabase.getInstance()
-                        .getReferenceFromUrl("https://simonicv2.firebaseio.com/Data ODP");
-                //ref.child(device).child("namae").setValue("alfa");
-                ref.child(idd).child("laporan_masalah").push()
-                        .setValue(new Masalah_gs(masalah2,tgl2,jam2))
-                        .addOnSuccessListener(Input_masalah.this, new OnSuccessListener() {
+                mg.setMasalah(masalah2);
+                mg.setTgl(tgl2);
+                mg.setJam(jam2);
+                reference.child(String.valueOf(id+1)).setValue(mg).addOnSuccessListener(Input_masalah.this, new OnSuccessListener() {
                             @Override
                             public void onSuccess(Object o) {
                                 //Peristiwa ini terjadi saat user berhasil menyimpan datanya kedalam Database

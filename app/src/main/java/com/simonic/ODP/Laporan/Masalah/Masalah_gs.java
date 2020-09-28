@@ -1,7 +1,9 @@
 package com.simonic.ODP.Laporan.Masalah;
 
 public class Masalah_gs {
+public Masalah_gs(){
 
+}
     public Masalah_gs(String masalah, String tgl, String jam){
         this.masalah = masalah;
         this.tgl = tgl;

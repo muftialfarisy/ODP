@@ -32,7 +32,7 @@
             android:id="@+id/jdl_ckp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Laporan Check Up"
+            android:text="Laporan Masalah"
             android:gravity="center"
             android:layout_marginTop="@dimen/_55sdp"
             android:textColor="#000000"
@@ -56,13 +56,13 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-        <com.cooltechworks.views.shimmer.ShimmerRecyclerView
-            android:id="@+id/rv_reportc"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-             android:layout_marginTop="@dimen/_25sdp">
+                <com.cooltechworks.views.shimmer.ShimmerRecyclerView
+                    android:id="@+id/rv_reportm"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/_25sdp">
 
-        </com.cooltechworks.views.shimmer.ShimmerRecyclerView>
+                </com.cooltechworks.views.shimmer.ShimmerRecyclerView>
             </LinearLayout>
         </ScrollView>
         <LinearLayout

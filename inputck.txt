@@ -1,0 +1,51 @@
+new Checkup_gs(rs,tgl2,haemoglobin,leukosit,trombosit,elektrolit,kadar_puasa,kadar_setelah,kolesterol,asam_urat,hati,
+                                ginjal)
+
+ submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAuth = FirebaseAuth.getInstance();
+                mFirebaseAnalytics = FirebaseAnalytics.getInstance(Input_checkup.this);
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                final String rs = txtrs.getText().toString();
+                final String haemoglobin = txthaemoglobin.getText().toString();
+                final String leukosit = txtleukosit.getText().toString();
+                final String trombosit = txttrombosit.getText().toString();
+                final String elektrolit = txtelektrolit.getText().toString();
+                final String kadar_puasa = txtpuasa.getText().toString();
+                final String kadar_setelah = txtsetelah.getText().toString();
+                final String kolesterol = txtkolesterol.getText().toString();
+                final String asam_urat = txtasamurat.getText().toString();
+                final String hati = txthati.getText().toString();
+                final String ginjal = txtginjal.getText().toString();
+                final String tgl2 = tgl.getText().toString();
+                String idd = deviceidd.getText().toString();
+
+                //
+                cg.setRs(rs);
+                cg.setHaemoglobin(haemoglobin);
+                cg.setTanggal(tgl2);
+                //
+                DatabaseReference ref = FirebaseDatabase.getInstance()
+                        .getReferenceFromUrl("https://simonicv2.firebaseio.com/Data ODP");
+                DatabaseReference quizRef = ref.child("Data ODP").child(idd).child("laporan_checkup");
+                final String key = quizRef.push().getKey();
+                Intent intent = new Intent(Input_checkup.this,Laporan_main.class);
+                intent.putExtra("key", key);
+
+                //ref.child(device).child("namae").setValue("alfa");
+                ref.child(idd).child("laporan_checkup").child(key).setValue(cg)
+                        .addOnSuccessListener(Input_checkup.this, new OnSuccessListener() {
+                            @Override
+                            public void onSuccess(Object o) {
+                                //Peristiwa ini terjadi saat user berhasil menyimpan datanya kedalam Database
+                                cg.setKey(key);
+                                cg.setRs(rs);
+                                random2.setText(key);
+                                //emptydata();
+                                DynamicToast.makeSuccess(Input_checkup.this, "Data Tersimpan", Toast.LENGTH_SHORT).show();
+
+                            }
+                        });
+            }
+        });

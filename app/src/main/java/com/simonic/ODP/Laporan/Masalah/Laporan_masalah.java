@@ -1,4 +1,4 @@
-package com.simonic.ODP.Laporan;
+package com.simonic.ODP.Laporan.Masalah;
 
 import android.Manifest;
 import android.animation.Animator;
@@ -12,7 +12,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -27,70 +26,44 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.pranavpandey.android.dynamic.toasts.DynamicToast;
 import com.simonic.ODP.Laporan.Checkup.CheckupAdapter;
 import com.simonic.ODP.Laporan.Checkup.Checkup_gs;
 import com.simonic.ODP.Laporan.Checkup.Input_checkup;
 import com.simonic.ODP.Laporan.Checkup.Lcheckup_gs;
-import com.simonic.ODP.Laporan.Masalah.Input_masalah;
-import com.simonic.ODP.Laporan.Masalah.Laporan_masalah;
+
+import com.simonic.ODP.Laporan.Laporan_main;
 import com.simonic.ODP.Laporan.Suhu.Input_suhu;
-import com.simonic.ODP.MainActivity;
 import com.simonic.ODP.R;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.Iterator;
 
-//https://stackoverflow.com/questions/30699302/android-design-support-library-expandable-floating-action-buttonfab-menu
-//https://github.com/ajay-dewari/FloatingActionButton-Menu/blob/master/app/src/main/res/layout/activity_main.xml
-//https://github.com/ajay-dewari/FloatingActionButton-Menu/blob/master/app/src/main/java/com/ajaysinghdewari/floatingactionbuttonmenu/activities/Laporan_main.java
-public class Laporan_main extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class Laporan_masalah extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     DrawerLayout drawerLayout;
     ActionBarDrawerToggle drawerToggle;
     Toolbar toolbar;
-    CheckupAdapter adapter;
+    MasalahAdapter adapter;
     NavigationView navigationView;
     FloatingActionButton fab,fab1,fab2,fab3;
     LinearLayout fab1l,fab2l,fab3l;
     View fabBGLayout;
     TextView id,random;
     String GetUserID;
-    Checkup_gs cg;
+    Masalah_gs mg;
     int i;
     boolean isFABOpen = false;
-    private ArrayList<Checkup_gs> reportlist = new ArrayList<>();
-    private ArrayList<Lcheckup_gs> reportlist2 = new ArrayList<>();
-    private ShimmerRecyclerView Rv_reportc;
+    private ArrayList<Masalah_gs> masalahlist = new ArrayList<>();
+    private ShimmerRecyclerView Rv_reportm;
     private DatabaseReference reference;
     private FirebaseAnalytics mFirebaseAnalytics;
     private FirebaseAuth auth;
@@ -101,60 +74,21 @@ public class Laporan_main extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.laporan_checkup);
+        setContentView(R.layout.laporan_masalah);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar2);
         setSupportActionBar(toolbar);
         drawerLayout = findViewById(R.id.drawer);
-        Rv_reportc = findViewById(R.id.rv_reportc);
+        Rv_reportm = findViewById(R.id.rv_reportm);
         id = findViewById(R.id.deviceid);
         auth = FirebaseAuth.getInstance();
-        Rv_reportc.setHasFixedSize(true);
-        //CheckupAdapter adapter = new CheckupAdapter(Laporan_main.this, reportlist);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(Laporan_main.this);
-        Rv_reportc.setLayoutManager(layoutManager);
-        Rv_reportc.showShimmerAdapter();
+        Rv_reportm.setHasFixedSize(true);
+        //CheckupAdapter adapter = new CheckupAdapter(Laporan_masalah.this, reportlist);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(Laporan_masalah.this);
+        Rv_reportm.setLayoutManager(layoutManager);
+        Rv_reportm.showShimmerAdapter();
         random = findViewById(R.id.test);
+        mg = new Masalah_gs();
         getdevice();
-        cg = new Checkup_gs();
-        String idd = id.getText().toString();
-
-
-        if (i < 0){
-            showDialog();
-        }else{
-        for (i=0;i<50;i++) {
-            final DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Data ODP").child(idd).child("laporan_checkup").child(String.valueOf(i));
-            reference.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if (!snapshot.exists()) {
-                        mid = mid + 1;
-
-                    } else {
-
-                        mid = (snapshot.getChildrenCount());
-                        Checkup_gs individu = snapshot.getValue(Checkup_gs.class);
-                        reportlist.add(individu);
-
-                        adapter = new CheckupAdapter(Laporan_main.this, reportlist);
-
-
-                        Rv_reportc.setAdapter(adapter);
-                        adapter.notifyDataSetChanged();
-
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-
-        }
-        }
-        //random.setText(getIntent().getStringExtra("key"));
-
         fab1l = findViewById(R.id.ln_fab1);
         fab2l = findViewById(R.id.ln_fab2);
         fab3l = findViewById(R.id.ln_fab3);
@@ -176,21 +110,21 @@ public class Laporan_main extends AppCompatActivity implements NavigationView.On
         fab2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Laporan_main.this, Input_masalah.class);
+                Intent intent = new Intent(Laporan_masalah.this, Input_masalah.class);
                 startActivity(intent);
             }
         });
         fab1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Laporan_main.this, Input_checkup.class);
+                Intent intent = new Intent(Laporan_masalah.this, Input_checkup.class);
                 startActivity(intent);
             }
         });
         fab3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Laporan_main.this, Input_suhu.class);
+                Intent intent = new Intent(Laporan_masalah.this, Input_suhu.class);
                 startActivity(intent);
             }
         });
@@ -202,7 +136,7 @@ public class Laporan_main extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(0);
 
-        //getdata();
+        getdata();
     }
     private void showFABMenu(){
         isFABOpen=true;
@@ -257,32 +191,67 @@ public class Laporan_main extends AppCompatActivity implements NavigationView.On
             super.onBackPressed();
         }
     }
-
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        int id = menuItem.getItemId();
-
-        switch (id){
+        switch (menuItem.getItemId()){
             case R.id.chekup:
+                Intent intent = new Intent(Laporan_masalah.this, Laporan_main.class);
                 Toast.makeText(this,"checkup",Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.masalah:
-                Intent intent = new Intent(Laporan_main.this, Laporan_masalah.class);
                 startActivity(intent);
-                Toast.makeText(this,"masalah",Toast.LENGTH_SHORT).show();
+                break;
 
+            case R.id.masalah:
+                Toast.makeText(this,"masalah",Toast.LENGTH_SHORT).show();
                 break;
         }
-        return true;
+        return false;
     }
+private void getdata(){
+    String idd = id.getText().toString();
 
+
+    if (i < 0){
+        showDialog();
+    }else{
+        for (i=0;i<50;i++) {
+            final DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Data ODP").child(idd).child("laporan_masalah").child(String.valueOf(i));
+            reference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (!snapshot.exists()) {
+                        mid = mid + 1;
+
+                    } else {
+
+                        mid = (snapshot.getChildrenCount());
+                        Masalah_gs individu = snapshot.getValue(Masalah_gs.class);
+                        masalahlist.add(individu);
+
+                        adapter = new MasalahAdapter(Laporan_masalah.this, masalahlist);
+
+
+                        Rv_reportm.setAdapter(adapter);
+                        adapter.notifyDataSetChanged();
+
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
+        }
+    }
+}
     public void getdevice(){
         telephonyManager  = (TelephonyManager) getSystemService(Context.
                 TELEPHONY_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ActivityCompat.checkSelfPermission(Laporan_main.this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-                if (!Laporan_main.this.shouldShowRequestPermissionRationale(Manifest.permission.READ_PHONE_STATE)) {
-                    final AlertDialog.Builder builder = new AlertDialog.Builder(Laporan_main.this);
+            if (ActivityCompat.checkSelfPermission(Laporan_masalah.this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+                if (!Laporan_masalah.this.shouldShowRequestPermissionRationale(Manifest.permission.READ_PHONE_STATE)) {
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(Laporan_masalah.this);
                     builder.setMessage("Please grant Phoone access so this app can detect Device ID.");
                     builder.setPositiveButton(android.R.string.ok, null);
                     builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
@@ -297,7 +266,7 @@ public class Laporan_main extends AppCompatActivity implements NavigationView.On
                     });
                     builder.show();
                 } else {
-                    final AlertDialog.Builder builder = new AlertDialog.Builder(Laporan_main.this);
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(Laporan_masalah.this);
                     builder.setTitle("Functionality limited");
                     builder.setMessage("Since background location access has not been granted, this app will not be able to discover beacons in the background.  Please go to Settings -> Applications -> Permissions and grant background location access to this app.");
                     builder.setPositiveButton(android.R.string.ok, null);
@@ -324,7 +293,7 @@ public class Laporan_main extends AppCompatActivity implements NavigationView.On
 
         }
         if (null == deviceId || 0 == deviceId.length()) {
-            deviceId = Settings.Secure.getString(Laporan_main.this.getContentResolver(), Settings.Secure.ANDROID_ID);
+            deviceId = Settings.Secure.getString(Laporan_masalah.this.getContentResolver(), Settings.Secure.ANDROID_ID);
             id.setText(deviceId);
         }
     }
@@ -343,7 +312,7 @@ public class Laporan_main extends AppCompatActivity implements NavigationView.On
                 .setPositiveButton("Ya",new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,int id) {
                         // jika tombol diklik, maka akan menutup activity ini
-                        Intent intent = new Intent(Laporan_main.this, Input_checkup.class);
+                        Intent intent = new Intent(Laporan_masalah.this, Input_checkup.class);
                         startActivity(intent);
                     }
                 })
@@ -351,7 +320,7 @@ public class Laporan_main extends AppCompatActivity implements NavigationView.On
                     public void onClick(DialogInterface dialog, int id) {
                         // jika tombol ini diklik, akan menutup dialog
                         // dan tidak terjadi apa2
-                        Laporan_main.this.finish();
+                        Laporan_masalah.this.finish();
                     }
                 });
 
@@ -362,5 +331,6 @@ public class Laporan_main extends AppCompatActivity implements NavigationView.On
         alertDialog.show();
     }
 
-    }
+}
+
 
