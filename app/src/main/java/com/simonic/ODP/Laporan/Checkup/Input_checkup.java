@@ -151,7 +151,7 @@ public class Input_checkup extends AppCompatActivity {
                 reference.child(String.valueOf(id+1)).setValue(cg).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-
+//terbaru
                         DynamicToast.makeSuccess(Input_checkup.this, "Data Tersimpan", Toast.LENGTH_SHORT).show();
                     }
                 });
