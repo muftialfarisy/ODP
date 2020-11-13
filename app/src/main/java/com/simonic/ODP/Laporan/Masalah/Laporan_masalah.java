@@ -194,13 +194,13 @@ public class Laporan_masalah extends AppCompatActivity implements NavigationView
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()){
-            case R.id.chekup:
+            case R.id.chekup2:
                 Intent intent = new Intent(Laporan_masalah.this, Laporan_main.class);
                 Toast.makeText(this,"checkup",Toast.LENGTH_SHORT).show();
                 startActivity(intent);
                 break;
 
-            case R.id.masalah:
+            case R.id.masalah2:
                 Toast.makeText(this,"masalah",Toast.LENGTH_SHORT).show();
                 break;
         }

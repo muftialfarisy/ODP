@@ -26,7 +26,6 @@
         </activity>
         <activity android:name=".Register"/>
         <activity android:name=".Laporan.Laporan_main"/>
-        <activity android:name=".Laporan.Checkup.Laporan_checkup"/>
         <activity android:name=".Laporan.Checkup.Input_checkup"/>
         <activity android:name=".Laporan.Masalah.Input_masalah"/>
         <activity android:name=".Laporan.Suhu.Input_suhu"/>

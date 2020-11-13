@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="@layout/app_toolbar">
+
+
+
+    <View
+        android:id="@+id/fabBGLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/jdl_ckp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_55sdp"
+            android:gravity="center"
+            android:text="Laporan Check Up"
+            android:textColor="#000000"
+            android:textSize="@dimen/_15sdp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/deviceid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/jdl_ckp" />
+
+        <TextView
+            android:id="@+id/test"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/deviceid" />
+
+
+
+        <com.cooltechworks.views.shimmer.ShimmerRecyclerView
+            android:id="@+id/rv_reportc"
+            android:layout_width="match_parent"
+            android:layout_height="716dp"
+            android:layout_marginTop="@dimen/_100sdp">
+
+        </com.cooltechworks.views.shimmer.ShimmerRecyclerView>
+
+        <LinearLayout
+            android:id="@+id/ln_fab3"
+            android:layout_width="124dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_234sdp"
+            android:layout_marginTop="@dimen/_380sdp"
+            android:clipToPadding="false"
+            android:visibility="gone">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab3"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="@dimen/_50sdp"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="@dimen/_15sdp"
+                android:backgroundTint="#62F852"
+                android:src="@drawable/ic_thermometer"
+                app:borderWidth="@dimen/_2sdp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ln_fab2"
+            android:layout_width="wrap_content"
+            android:layout_height="77dp"
+            android:layout_marginLeft="@dimen/_235sdp"
+            android:layout_marginTop="@dimen/_450sdp"
+            android:clipToPadding="false"
+            android:visibility="gone">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab2"
+                android:layout_width="58dp"
+                android:layout_height="77dp"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="@dimen/_15sdp"
+                android:backgroundTint="#62F852"
+                android:src="@drawable/ic_problem"
+                app:borderWidth="@dimen/_2sdp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ln_fab1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_250sdp"
+            android:layout_marginTop="@dimen/_500sdp"
+            android:clipToPadding="false"
+            android:visibility="gone">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab1"
+                android:layout_width="58dp"
+                android:layout_height="77dp"
+                android:layout_gravity="bottom|end"
+                android:backgroundTint="#62F852"
+                android:src="@drawable/ic_health_report"
+                app:borderWidth="@dimen/_2sdp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_250sdp"
+            android:layout_marginTop="@dimen/_550sdp">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:backgroundTint="#62F852"
+                android:src="@drawable/ic_add"
+                app:borderWidth="@dimen/_2sdp" />
+        </LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>

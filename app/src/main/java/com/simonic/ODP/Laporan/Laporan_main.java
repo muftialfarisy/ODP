@@ -25,6 +25,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -104,7 +105,14 @@ public class Laporan_main extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.laporan_checkup);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar2);
         setSupportActionBar(toolbar);
-        drawerLayout = findViewById(R.id.drawer);
+        drawerLayout = findViewById(R.id.drawer2);
+        drawerToggle = new ActionBarDrawerToggle(Laporan_main.this,drawerLayout,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(drawerToggle);
+        drawerLayout.setDrawerListener(drawerToggle);
+        drawerToggle.setDrawerIndicatorEnabled(true);
+        drawerToggle.syncState();
+        navigationView = findViewById(R.id.navigationview2);
+        navigationView.setNavigationItemSelectedListener(Laporan_main.this);
         Rv_reportc = findViewById(R.id.rv_reportc);
         id = findViewById(R.id.deviceid);
         auth = FirebaseAuth.getInstance();
@@ -194,13 +202,7 @@ public class Laporan_main extends AppCompatActivity implements NavigationView.On
                 startActivity(intent);
             }
         });
-        drawerToggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
-        drawerLayout.addDrawerListener(drawerToggle);
-        drawerToggle.setDrawerIndicatorEnabled(true);
-        drawerToggle.syncState();
-        navigationView = findViewById(R.id.navigationview);
-        navigationView.setNavigationItemSelectedListener(this);
-        navigationView.setCheckedItem(0);
+
 
         //getdata();
     }
@@ -256,23 +258,39 @@ public class Laporan_main extends AppCompatActivity implements NavigationView.On
         } else {
             super.onBackPressed();
         }
+        drawerLayout = findViewById(R.id.drawer2);
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
-
+    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         int id = menuItem.getItemId();
 
+        /*if(id == R.id.chekup){
+            Toast.makeText(this,"checkup",Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.masalah){
+            Intent intent = new Intent(Laporan_main.this, Laporan_masalah.class);
+            startActivity(intent);
+            Toast.makeText(this,"masalah",Toast.LENGTH_SHORT).show();
+
+        }*/
         switch (id){
-            case R.id.chekup:
+            case R.id.chekup2:
                 Toast.makeText(this,"checkup",Toast.LENGTH_SHORT).show();
                 break;
-            case R.id.masalah:
-                Intent intent = new Intent(Laporan_main.this, Laporan_masalah.class);
-                startActivity(intent);
+            case R.id.masalah2:
+                Intent h = new Intent(Laporan_main.this, Laporan_masalah.class);
+                startActivity(h);
                 Toast.makeText(this,"masalah",Toast.LENGTH_SHORT).show();
 
                 break;
         }
+        drawerLayout = findViewById(R.id.drawer2);
+        drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
 
