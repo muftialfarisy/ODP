@@ -30,5 +30,6 @@
         <activity android:name=".Laporan.Masalah.Input_masalah"/>
         <activity android:name=".Laporan.Suhu.Input_suhu"/>
         <activity android:name=".Laporan.Masalah.Laporan_masalah"/>
+        <activity android:name=".status.Status_karantina"/>
     </application>
 </manifest>

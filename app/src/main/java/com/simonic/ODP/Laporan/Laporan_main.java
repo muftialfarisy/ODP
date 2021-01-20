@@ -98,7 +98,7 @@ public class Laporan_main extends AppCompatActivity implements NavigationView.On
     TelephonyManager telephonyManager;
     private static final int PERMISSION_REQUEST_BACKGROUND_LOCATION = 2;
     ArrayList<String> categories = new ArrayList<>();
-    long mid = 0;
+    long mid;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

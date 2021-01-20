@@ -26,6 +26,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.simonic.ODP.Laporan.Checkup.Input_checkup;
 import com.simonic.ODP.Laporan.Laporan_main;
+import com.simonic.ODP.status.Status_karantina;
 
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -73,7 +74,7 @@ Integer no;
             public void onClick(View v) {
                 getdevice();
                 if(no == 1){
-                    Intent intent = new Intent(MainActivity.this, Input_checkup.class);
+                    Intent intent = new Intent(MainActivity.this, Status_karantina.class);
                     startActivity(intent);
                 }else {
                     Intent intent = new Intent(MainActivity.this, Register.class);
